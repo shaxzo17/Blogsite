@@ -2,7 +2,6 @@
 <html lang="en">
 {% load static %}
 <head>
-
 	<title>Home 01</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,6 +26,26 @@
 <!--===============================================================================================-->
 </head>
 <body class="animsition">
+
+  <!-- MESSAGES -->
+  {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- AUTH LINKS -->
+  <a href="{% url 'signup' %}">Ro‘yxatdan o‘tish</a> <br>
+
+  {% if user.is_authenticated %}
+    <a href="{% url 'logout' %}">Chiqish</a> <br>
+  {% else %}
+    <a href="{% url 'login' %}">Kirish</a> <br>
+  {% endif %}
 	
 	<!-- Header -->
 	<header>
@@ -59,7 +78,7 @@
 							Sing up
 						</a>
 
-						<a href="#" class="left-topbar-item">
+						<a href="{% url 'login' %}" class="left-topbar-item">
 							Log in
 						</a>
 					</div>

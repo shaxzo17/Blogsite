@@ -1,7 +1,8 @@
 from django.shortcuts import render , get_object_or_404
 from .models import Category, News
+from django.contrib.auth.decorators import login_required
 
-
+@login_required(login_url='login')
 def index(request):
     categories = Category.objects.all()
     first_news = []
@@ -17,6 +18,7 @@ def index(request):
 
     return render(request, 'index.html', {'categories': categories, 'first_news': first_news , 'news': news})
 
+@login_required(login_url='login')
 def category(request , pk):
     category = get_object_or_404(Category, pk=pk)
     news = News.objects.filter(category=category).order_by('-created_at')

@@ -38,15 +38,15 @@
     </div>
   {% endif %}
 
-  <!-- AUTH LINKS -->
-  <a href="{% url 'signup' %}">Ro‘yxatdan o‘tish</a> <br>
+ <!-- AUTH LINKS -->
+	{% if user.is_authenticated %}
+	  <a href="{% url 'profile' %}">Profil</a> <br>
+	  <a href="{% url 'logout' %}">Chiqish</a> <br>
+	{% else %}
+	  <a href="{% url 'signup' %}">Ro‘yxatdan o‘tish</a> <br>
+	  <a href="{% url 'login' %}">Kirish</a> <br>
+	{% endif %}
 
-  {% if user.is_authenticated %}
-    <a href="{% url 'logout' %}">Chiqish</a> <br>
-  {% else %}
-    <a href="{% url 'login' %}">Kirish</a> <br>
-  {% endif %}
-	
 	<!-- Header -->
 	<header>
 		<!-- Header desktop -->

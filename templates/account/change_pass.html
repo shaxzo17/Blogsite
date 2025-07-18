@@ -1,10 +1,176 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>Parolni o‘zgartirish</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Ubuntu', sans-serif;
+      background: black;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .form-container {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 40px;
+      border-radius: 15px;
+      max-width: 400px;
+      margin: 100px auto;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-container input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .form-container input:focus {
+      outline: 2px solid #00e0ff;
+      background: rgba(255,255,255,0.15);
+    }
+
+    .form-container button {
+      width: 100%;
+      padding: 12px;
+      background: #00e0ff;
+      border: none;
+      border-radius: 8px;
+      color: black;
+      font-size: 18px;
+      font-weight: bold;
+      transition: 0.3s;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .form-container button:hover {
+      background: #00c2d3;
+    }
+
+    .alert {
+      background: rgba(255, 0, 0, 0.2);
+      color: red;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .alert-success {
+      background: rgba(0, 255, 0, 0.2);
+      color: lime;
+    }
+  </style>
 </head>
 <body>
+
+<canvas id="fishCanvas"></canvas>
+
+<div class="form-container">
+  <h2>Parolni o‘zgartirish</h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Yangi parolni saqlash</button>
+  </form>
+</div>
+
+<script>
+  const canvas = document.getElementById("fishCanvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let fishArray = [];
+
+  class Fish {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.radius = Math.random() * 5 + 2;
+      this.dx = Math.random() * 1 - 0.5;
+      this.dy = Math.random() * 1 - 0.5;
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.fillStyle = "#00e0ff";
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    update() {
+      this.x += this.dx;
+      this.y += this.dy;
+      if (this.x < 0 || this.x > canvas.width) this.dx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.dy *= -1;
+      this.draw();
+    }
+  }
+
+  function init() {
+    fishArray = [];
+    for (let i = 0; i < 120; i++) {
+      fishArray.push(new Fish());
+    }
+  }
+
+  function animate() {
+    ctx.fillStyle = "rgba(0,0,0,0.15)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    fishArray.forEach(f => f.update());
+    requestAnimationFrame(animate);
+  }
+
+  init();
+  animate();
+
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    init();
+  });
+</script>
 
 </body>
 </html>

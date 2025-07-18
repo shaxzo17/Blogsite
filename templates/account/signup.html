@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <title>Ro‘yxatdan o‘tish</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
 
   <style>
@@ -33,7 +31,7 @@
     .form-container {
       position: relative;
       z-index: 1;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(255, 255, 255, 0.05);
       padding: 40px;
       border-radius: 15px;
       max-width: 400px;
@@ -86,8 +84,13 @@
       padding: 10px;
       margin-bottom: 10px;
       border-radius: 5px;
+      text-align: center;
     }
 
+    .alert-success {
+      background: rgba(0, 255, 0, 0.2);
+      color: lime;
+    }
   </style>
 </head>
 <body>
@@ -99,37 +102,22 @@
 
   {% if messages %}
     {% for message in messages %}
-      <div class="alert">{{ message }}</div>
+      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+        {{ message }}
+      </div>
     {% endfor %}
   {% endif %}
 
-  <form method="POST" onsubmit="return checkPasswords()">
+  <form method="post">
     {% csrf_token %}
-    <input type="text" name="username" placeholder="Foydalanuvchi nomi" required>
-    <input type="text" name="first_name" placeholder="Ism" required>
-    <input type="text" name="last_name" placeholder="Familiya" required>
-    <input type="email" name="email" placeholder="Email" required>
-    <input type="password" name="password1" placeholder="Parol" id="pass1" required>
-    <input type="password" name="password2" placeholder="Parolni tasdiqlang" id="pass2" required>
+    {{ form.as_p }}
     <button type="submit">Yuborish</button>
   </form>
 </div>
 
 <script>
-  function checkPasswords() {
-    let p1 = document.getElementById('pass1').value;
-    let p2 = document.getElementById('pass2').value;
-    if (p1 !== p2) {
-      alert("Parollar mos emas!");
-      return false;
-    }
-    return true;
-  }
-
-  // BALIQLAR ANIMATSIYASI
   const canvas = document.getElementById("fishCanvas");
   const ctx = canvas.getContext("2d");
-
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
@@ -154,10 +142,8 @@
     update() {
       this.x += this.dx;
       this.y += this.dy;
-
       if (this.x < 0 || this.x > canvas.width) this.dx *= -1;
       if (this.y < 0 || this.y > canvas.height) this.dy *= -1;
-
       this.draw();
     }
   }
@@ -172,7 +158,6 @@
   function animate() {
     ctx.fillStyle = "rgba(0,0,0,0.15)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
     fishArray.forEach(f => f.update());
     requestAnimationFrame(animate);
   }

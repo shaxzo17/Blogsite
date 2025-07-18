@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>Parolni tiklash (1-bosqich)</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 224, 255, 0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #00e0ff;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      background-color: #333;
+      border: none;
+      border-radius: 5px;
+      color: white;
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      background-color: #00e0ff;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #00c2d3;
+    }
+
+    .message {
+      color: #ff5e5e;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    a {
+      display: block;
+      text-align: center;
+      margin-top: 15px;
+      color: #00e0ff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Parolni tiklash</h2>
+    <form method="post">
+      {% csrf_token %}
+      <label for="username">Foydalanuvchi nomi</label>
+      <input type="text" id="username" name="username" placeholder="Username kiriting" required>
+
+      <button type="submit">Kodni emailga yuborish</button>
+    </form>
+
+    {% if messages %}
+      <div class="message">
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <a href="{% url 'login' %}">Kirish sahifasiga qaytish</a>
+  </div>
+</body>
+</html>

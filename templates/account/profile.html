@@ -1,10 +1,169 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+  <meta charset="UTF-8" />
+  <title>Profil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Ubuntu', sans-serif;
+      background: black;
+      overflow: hidden;
+      color: white;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .profile-card {
+      position: relative;
+      z-index: 1;
+      max-width: 400px;
+      margin: 100px auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.1);
+      backdrop-filter: blur(8px);
+    }
+
+    .profile-card h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #00e0ff;
+    }
+
+    .info p {
+      margin: 12px 0;
+      font-size: 17px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 5px;
+    }
+
+    .info p span {
+      font-weight: bold;
+      color: #ccc;
+      display: inline-block;
+      width: 120px;
+    }
+
+    .btns a {
+      display: block;
+      text-align: center;
+      margin: 12px 0;
+      padding: 12px;
+      background: #00e0ff;
+      color: black;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btns a:hover {
+      background: #00c2d3;
+    }
+
+    .btns {
+      margin-top: 30px;
+    }
+
+  </style>
 </head>
 <body>
-$END$
+
+<canvas id="fishCanvas"></canvas>
+
+<div class="profile-card">
+  <h2>👤 Profil Ma'lumotlari</h2>
+
+  <div class="info">
+    <p><span>Username:</span> {{ user.username }}</p>
+    <p><span>Ism:</span> {{ user.first_name }}</p>
+    <p><span>Familiya:</span> {{ user.last_name }}</p>
+    <p><span>Email:</span> {{ user.email }}</p>
+  </div>
+
+  <div class="btns">
+    <a href="{% url 'profile-update' %}">📝 Profilni yangilash</a>
+    <a href="{% url 'change-pass' %}">🔒 Parolni o‘zgartirish</a>
+    <a href="{% url 'main' %}">🏠 Asosiy sahifaga qaytish</a>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById("fishCanvas");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let fishArray = [];
+
+  class Fish {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.radius = Math.random() * 5 + 2;
+      this.dx = Math.random() * 1 - 0.5;
+      this.dy = Math.random() * 1 - 0.5;
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.fillStyle = "#00e0ff";
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    update() {
+      this.x += this.dx;
+      this.y += this.dy;
+
+      if (this.x < 0 || this.x > canvas.width) this.dx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.dy *= -1;
+
+      this.draw();
+    }
+  }
+
+  function init() {
+    fishArray = [];
+    for (let i = 0; i < 100; i++) {
+      fishArray.push(new Fish());
+    }
+  }
+
+  function animate() {
+    ctx.fillStyle = "rgba(0,0,0,0.2)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    fishArray.forEach(f => f.update());
+    requestAnimationFrame(animate);
+  }
+
+  init();
+  animate();
+
+  window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    init();
+  });
+</script>
+
 </body>
 </html>

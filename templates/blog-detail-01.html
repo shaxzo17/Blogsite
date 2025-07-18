@@ -1,31 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+	{% load static %}
 <head>
+	{% if messages %}
+	  <ul class="messages">
+		{% for message in messages %}
+		  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		{% endfor %}
+	  </ul>
+	{% endif %}
+
 	<title>Blog Detail With Sidebar</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+	<link rel="icon" type="image/png" href="{% static 'images/icons/favicon.png' %}"/>
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="fonts/fontawesome-5.0.8/css/fontawesome-all.min.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'fonts/fontawesome-5.0.8/css/fontawesome-all.min.css' %}">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'fonts/iconic/css/material-design-iconic-font.min.css' %}">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css' %}">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/css-hamburgers/hamburgers.min.css' %}">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="css/util.min.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animsition/css/animsition.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/util.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 <!--===============================================================================================-->
 </head>
 <body class="animsition">
+
 	
 	<!-- Header -->
 	<header>
@@ -223,12 +232,12 @@
 			<div class="wrap-logo container">
 				<!-- Logo desktop -->		
 				<div class="logo">
-					<a href="index.html"><img src="images/icons/logo-01.png" alt="LOGO"></a>
+					<a href="index.html"><img src="{% static 'images/icons/logo-01.png' %}" alt="LOGO"></a>
 				</div>	
 
 				<!-- Banner -->
 				<div class="banner-header">
-					<a href="#"><img src="images/banner-01.jpg" alt="IMG"></a>
+					<a href="#"><img src="{% static 'images/banner-01.jpg' %}" alt="IMG"></a>
 				</div>
 			</div>	
 			
@@ -238,7 +247,7 @@
 					<!-- Menu desktop -->
 					<nav class="menu-desktop">
 						<a class="logo-stick" href="index.html">
-							<img src="images/icons/logo-01.png" alt="LOGO">
+							<img src="{% static 'images/icons/logo-01.png' %}" alt="LOGO">
 						</a>
 
 						<ul class="main-menu">
@@ -257,11 +266,9 @@
 								<div class="sub-mega-menu">
 									<div class="nav flex-column nav-pills" role="tablist">
 										<a class="nav-link active" data-toggle="pill" href="#news-0" role="tab">All</a>
-										<a class="nav-link" data-toggle="pill" href="#news-1" role="tab">Entertaiment</a>
-										<a class="nav-link" data-toggle="pill" href="#news-2" role="tab">Fashion</a>
-										<a class="nav-link" data-toggle="pill" href="#news-3" role="tab">Life Style</a>
-										<a class="nav-link" data-toggle="pill" href="#news-4" role="tab">Technology</a>
-										<a class="nav-link" data-toggle="pill" href="#news-5" role="tab">Travel</a>
+										{% for categoryy in categories %}
+										<a class="nav-link" data-toggle="pill" href="{% url 'category' categoryy.pk %}" role="tab">{{categoryy.name}}</a>
+										{% endfor %}
 									</div>
 
 									<div class="tab-content">
@@ -2312,37 +2319,27 @@
 							</a>
 
 							<h3 class="f1-l-3 cl2 p-b-16 p-t-33 respon2">
-								Nulla non interdum metus non laoreet nisi tellus eget aliquam lorem pellentesque
+								{{ post.title }}
 							</h3>
 							
 							<div class="flex-wr-s-s p-b-40">
 								<span class="f1-s-3 cl8 m-r-15">
 									<a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
-										by John Alvarado
+										{{post.username}}
 									</a>
 
 									<span class="m-rl-3">-</span>
 
 									<span>
-										Feb 18
+										{{news.8.created_at}}
 									</span>
-								</span>
-
-								<span class="f1-s-3 cl8 m-r-15">
-									5239 Views
-								</span>
-
-								<a href="#" class="f1-s-3 cl8 hov-cl10 trans-03 m-r-15">
-									0 Comment
-								</a>
 							</div>
-
 							<div class="wrap-pic-max-w p-b-30">
-								<img src="images/blog-list-01.jpg" alt="IMG">
+								<img src="{% static 'images/blog-list-01.jpg' %}" alt="IMG">
 							</div>
 
 							<p class="f1-s-11 cl6 p-b-25">
-								Curabitur volutpat bibendum molestie. Vestibulum ornare gravida semper. Aliquam a dui suscipit, fringilla metus id, maximus leo. Vivamus sapien arcu, mollis eu pharetra vitae, condimentum in orci. Integer eu sodales dolor. Maecenas elementum arcu eu convallis rhoncus. Donec tortor sapien, euismod a faucibus eget, porttitor quis libero. 
+								Curabitur volutpat bibendum molestie. Vestibulum ornare gravida semper. Aliquam a dui suscipit, fringilla metus id, maximus leo. Vivamus sapien arcu, mollis eu pharetra vitae, condimentum in orci. Integer eu sodales dolor. Maecenas elementum arcu eu convallis rhoncus. Donec tortor sapien, euismod a faucibus eget, porttitor quis libero.
 							</p>
 
 							<p class="f1-s-11 cl6 p-b-25">
@@ -2409,20 +2406,34 @@
 							<p class="f1-s-13 cl8 p-b-40">
 								Your email address will not be published. Required fields are marked *
 							</p>
+<h3>Kommentariyalar (So‘nggi 3 ta)</h3>
+{% if comments %}
+  <ul style="list-style: none; padding-left: 0;">
+  {% for comment in comments %}
+    <li style="background: #222; padding: 15px; border-radius: 8px; margin-bottom: 10px; color: #ddd;">
+      <strong style="color: #00e0ff;">{{ comment.user.username }}</strong>
+      <span style="font-size: 0.9em; color: #999; margin-left: 10px;">
+        {{ comment.created_at|date:"d M Y, H:i" }}
+      </span>
+      <p style="margin-top: 8px; line-height: 1.4;">{{ comment.pos_text }}</p>
+    </li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <p>Hozircha kommentariyalar yo‘q.</p>
+{% endif %}
 
-							<form>
-								<textarea class="bo-1-rad-3 bocl13 size-a-15 f1-s-13 cl5 plh6 p-rl-18 p-tb-14 m-b-20" name="msg" placeholder="Comment..."></textarea>
+<form method="post" action="{% url 'news_detail' posts.id %}">
+  {% csrf_token %}
+  <textarea name="msg" placeholder="Kommentariya yozing..." required
+      style="width: 100%; padding: 10px; border-radius: 5px; border: none; background: #333; color: white; resize: vertical;"></textarea>
+  <button type="submit"
+      style="margin-top: 10px; background: #00e0ff; color: black; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+    Kommentariya qo‘shish
+  </button>
+</form>
 
-								<input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20" type="text" name="name" placeholder="Name*">
 
-								<input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20" type="text" name="email" placeholder="Email*">
-
-								<input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20" type="text" name="website" placeholder="Website">
-
-								<button class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10">
-									Post Comment
-								</button>
-							</form>
 						</div>
 					</div>
 				</div>
@@ -2617,7 +2628,7 @@
 
 								<li class="flex-wr-sb-s p-b-30">
 									<a href="#" class="size-w-10 wrap-pic-w hov1 trans-03">
-										<img src="images/popular-post-05.jpg" alt="IMG">
+										<img src="{% static 'images/popular-post-05.jpg' %}" alt="IMG">
 									</a>
 
 									<div class="size-w-11">
@@ -2645,7 +2656,7 @@
 
 								<li class="flex-wr-sb-s p-b-30">
 									<a href="#" class="size-w-10 wrap-pic-w hov1 trans-03">
-										<img src="images/popular-post-06.jpg" alt="IMG">
+										<img src="{% static 'images/popular-post-06.jpg' %}" alt="IMG">
 									</a>
 
 									<div class="size-w-11">
@@ -2687,22 +2698,6 @@
 								</a>
 
 								<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-									Lifestyle
-								</a>
-
-								<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-									Denim
-								</a>
-
-								<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-									Streetstyle
-								</a>
-
-								<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-									Crafts
-								</a>
-
-								<a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
 									Magazine
 								</a>
 
@@ -2729,10 +2724,12 @@
 					<div class="col-lg-4 p-b-20">
 						<div class="size-h-3 flex-s-c">
 							<a href="index.html">
-								<img class="max-s-full" src="images/icons/logo-02.png" alt="LOGO">
+								<img class="max-s-full" src="{% static 'images/icons/logo-02.png' %}" alt="LOGO">
 							</a>
 						</div>
-
+								<h3 class="f1-l-3 cl2 p-b-16 p-t-33 respon2">
+    {{ post.title }}
+</h3>
 						<div>
 							<p class="f1-s-1 cl11 p-b-16">
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tempor magna eget elit efficitur, at accumsan sem placerat. Nulla tellus libero, mattis nec molestie at, facilisis ut turpis. Vestibulum dolor metus, tincidunt eget odio
@@ -2895,14 +2892,14 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 
 <!--===============================================================================================-->	
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
 <!--===============================================================================================-->
-	<script src="vendor/animsition/js/animsition.min.js"></script>
+	<script src="{% static 'vendor/animsition/js/animsition.min.js' %}"></script>
 <!--===============================================================================================-->
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script>
+	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
 <!--===============================================================================================-->
-	<script src="js/main.js"></script>
+	<script src="{% static 'js/main.js' %}"></script>
 
 </body>
 </html>
